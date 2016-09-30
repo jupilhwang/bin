@@ -1,0 +1,90 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+"""
+Gnome random wallpaper changer by Sunny Ripert <negatif@gmail.com> <http://sunfox.org>
+Revamped a script by Maximilien Cuony <maxi_the_glu@bluewin.ch> <http://theglu.tuxfamily.org>
+Based on a script by guix77 <http://linuxfr.org/comments/465267.html#465267>
+"""
+
+import os, re, time, random, commands, sys
+from getopt import gnu_getopt, GetoptError
+
+
+# defaults
+
+seconds = 60
+images_path = '.'
+images_re = re.compile(r'(png|jpg|jpeg|svg|gif)$')
+
+
+# functions
+
+def images_in_dir(images_path):
+	"""Returns list of paths to all images found recursively in given folder path"""
+	images = []
+	for path, dirs, files in os.walk(images_path):
+		for filename in files:
+			if images_re.search(filename):
+				images.append(os.path.join(path, filename))
+	return images
+
+
+def set_random_background_image(images):
+	"""Sets a random background choosing from given list of filenames"""
+	random.seed()
+	filename = random.choice(images)
+	guix = "gconftool-2 -t string -s /desktop/gnome/background/picture_filename '%s'" % str(filename)
+	commands.getstatusoutput(guix)
+
+
+def main():
+	"""Main program loop"""
+	try:
+		images = images_in_dir(images_path) # look for images
+	except OSError, e:
+		print e
+		sys.exit(2)
+
+	if len(images) == 0: # 	 images ?
+		print "Error: no images found in '%s'" % images_path
+		sys.exit(2)
+	
+	# main loop
+	try:
+		while True:
+			set_random_background_image(images)
+			time.sleep(seconds)
+	except KeyboardInterrupt: # intercept ctrl-c
+		sys.exit(0)
+
+
+# modify options through arguments
+
+if __name__ == '__main__':
+	if len(sys.argv) > 0 :
+		# use getopt to get options
+		try:
+			optlist = gnu_getopt(sys.argv[1:], 'hs:p:', ['sec=', 'help', 'path='])
+		except GetoptError, e:
+			print 'Error: %s.' % e
+			print 'Type "%s --help" for more information.' % sys.argv[0]
+			sys.exit(1)
+
+		# loop through found options
+		for option, value in optlist[0]:
+			if option in ["-s", "--sec"]:
+				seconds = int(value)
+			elif option in ["-p", "--path"]:
+				images_path = value
+			elif option in ["-h", "--help"]:
+				print """Usage: %s [options]
+Modifies your Gnome desktop background periodically.
+
+Options:
+-h, --help                 shows this help
+-p, --path=PATH            sets the path where it will look for images (defaults to "%s") 
+-s, --sec=SECONDS          sets the period between each background change (defaults to %ss)""" % (sys.argv[0], images_path, seconds)
+				sys.exit(0)
+
+	# start main loop
+	main()

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+export http_proxy="http://www-proxy.jp.oracle.com:80"
+export https_proxy="http://www-proxy.jp.oracle.com:80"
+export ftp_proxy="http://www-proxy.jp.oracle.com:80"
+export all_proxy="http://www-proxy.jp.oracle.com:80"
+

@@ -1,0 +1,2 @@
+deb http://ppa.launchpad.net/sander-vangrieken/vaapi/ubuntu trusty main # disabled on upgrade to saucy disabled on upgrade to trusty
+# deb-src http://ppa.launchpad.net/sander-vangrieken/vaapi/ubuntu saucy main # disabled on upgrade to saucy

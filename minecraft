@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cd /home/jhwang/Dropbox/backups
+java -Xmx2g -XX:+UseG1GC -jar Minecraft_1.8.jar

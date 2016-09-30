@@ -1,0 +1,2 @@
+# deb http://apt.insynchq.com/ubuntu trusty non-free # disabled on upgrade to saucy disabled on upgrade to trusty
+# deb http://ppa.launchpad.net/nilarimogard/webupd8/ubuntu saucy main # disabled on upgrade to saucy

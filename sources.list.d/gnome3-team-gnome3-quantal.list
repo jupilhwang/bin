@@ -1,0 +1,2 @@
+#deb http://ppa.launchpad.net/gnome3-team/gnome3/ubuntu trusty main # disabled on upgrade to saucy disabled on upgrade to trusty
+# deb-src http://ppa.launchpad.net/gnome3-team/gnome3/ubuntu saucy main # disabled on upgrade to saucy

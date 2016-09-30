@@ -1,0 +1,5 @@
+#!/bin/bash
+
+for repo in $(docker images --format "{{.Repository}}") ; do docker pull $repo; done
+
+docker rmi $(docker images --filter "dangling=true")

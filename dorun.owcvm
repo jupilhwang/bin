@@ -1,0 +1,16 @@
+!#/bin/bash
+
+docker run -i -t \
+    --name=owcvm \
+    -e DISPLAY \
+    -p 7001:7001 \
+    -p 1521:1521 \
+    -p 8080:80 \
+    -v /tmp/.X11-unix:/tmp/.X11-unix \
+    -v $HOME/.Xauthority:/root/..Xauthority \
+    -v $HOME/Files/lxc/oracle:/oracle \
+    --net=bridge \
+    --privileged \
+    -e HOSTNAME=owcvm \
+    namoo4u/owcvm \
+    /bin/bash

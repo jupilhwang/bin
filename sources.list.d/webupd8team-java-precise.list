@@ -1,0 +1,2 @@
+deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main # disabled on upgrade to raring disabled on upgrade to saucy disabled on upgrade to trusty
+# deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu saucy main # disabled on upgrade to raring disabled on upgrade to saucy

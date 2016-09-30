@@ -1,0 +1,14 @@
+#!/bin/bash
+
+grep ^[0-9] /proc/net/arp | awk '{print $1,$4}' > /tmp/aaa
+
+for a in `awk '{print $2}' /tmp/aaa`
+do
+b=`grep -c $a /tmp/aaa`
+
+if [ $b -ge 2 ]
+then
+    notify-send "Found the same mac address."
+    grep $a aaa
+fi
+done

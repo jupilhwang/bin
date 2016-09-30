@@ -1,0 +1,2 @@
+deb http://ppa.launchpad.net/ricotz/docky/ubuntu trusty main # disabled on upgrade to trusty
+# deb-src http://ppa.launchpad.net/ricotz/docky/ubuntu saucy main

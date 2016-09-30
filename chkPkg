@@ -1,0 +1,5 @@
+#!/bin/sh
+for name in `dpkg --get-selections | grep '[[:space:]]install$' \\ | awk '{print $1}'`
+do
+   sudo apt-get install --assume-yes ${name}=`apt-cache show $name \\ | grep '^Version' | awk '{print $2}'`
+done

@@ -1,0 +1,3 @@
+ deb http://ppa.launchpad.net/numix/ppa/ubuntu trusty main # disabled on upgrade to trusty
+# deb-src http://ppa.launchpad.net/numix/ppa/ubuntu saucy main
+# deb-src http://ppa.launchpad.net/numix/ppa/ubuntu saucy main

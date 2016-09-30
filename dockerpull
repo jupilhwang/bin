@@ -1,0 +1,6 @@
+#!/bin/bash
+
+for name in `docker images --format "{{.Repository}}"`
+do
+    docker pull $name
+done

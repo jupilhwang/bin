@@ -1,0 +1,31 @@
+#!/bin/bash
+#Initial wifi interface configuration
+sudo ifconfig wlan1 down
+sleep 1
+sudo ifconfig wlan1 up 192.168.1.1 netmask 255.255.255.0
+sleep 1
+###########Start DHCP, comment out / add relevant section##########
+#Thanks to Panji
+#Doesn't try to run dhcpd when already running
+if [ "$(ps -e | grep dnsmaq)" == "" ]; then
+	sudo systemctl restart dnsmasq
+fi
+sudo sysctl -w net.ipv4.ip_forward=1
+
+###########
+#Enable NAT
+sudo iptables --flush
+sudo iptables --table nat --flush
+sudo iptables --delete-chain
+sudo iptables --table nat --delete-chain
+sudo iptables --table nat --append POSTROUTING --out-interface $1 -j MASQUERADE
+sudo iptables --append FORWARD --in-interface wlan1 -j ACCEPT
+ 
+#Thanks to lorenzo
+#Uncomment the line below if facing problems while sharing PPPoE, see lorenzo's comment for more details
+#iptables -I FORWARD -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
+ 
+
+#start hostapd
+sudo hostapd /etc/hostapd/hostapd.conf 1>/dev/null
+

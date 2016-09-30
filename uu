@@ -1,0 +1,10 @@
+#!/bin/sh
+
+
+#sudo apt -y update && sudo apt -y upgrade && sudo apt -y dist-upgrade && sudo apt -y autoremove && sudo apt -y autoclean
+#sudo apt -y update && sudo apt -y --force-yes upgrade && sudo apt -y --force-yes dist-upgrade && sudo apt-get -y autoclean && sudo apt-get -y autoremove
+
+
+#sudo pacman -Syu
+yaourt -Syu --aur
+
