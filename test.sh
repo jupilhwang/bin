@@ -2,3 +2,4 @@
 
 a = ['abc', 'def']
 a.each{println "$it"}
+
