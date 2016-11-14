@@ -15,5 +15,5 @@
 
 
 
-xrandr --output DP1 --scale 0.75x0.75 --rotate inverted
-#xrandr --output DP1 --scale 0.675x0.675 --rotate inverted
+#xrandr --output DP1 --scale 0.75x0.75 --rotate inverted
+xrandr --output DP1 --scale 0.675x0.675 --rotate inverted
