@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from gi.repository import Wnck, Gtk, Notify
+from gi.repository.GLib import Variant
 import signal, time
 
 class Kludge:
@@ -8,6 +9,8 @@ class Kludge:
         self.first = True
         signal.signal(signal.SIGINT, signal.SIG_DFL)
         self.screen = Wnck.Screen.get_default()
+        screenWidth = self.screen.get_width()
+        scrrenHeight = self.screen.get_height()
         Notify.init("Workspace Switch Notifier")
 
     def fire_the_kludge(self, data_a, data_b):
@@ -18,10 +21,13 @@ class Kludge:
             workspace_num = "Some error happened"
 
         popup = Notify.Notification.new("Workspace: " + str(workspace_num))
-#        popup.set_hint('x', gtk.gdk.screen_width()/2.)
-#        popup.set_hint('y', gtk.gdk.screen_height()/2.)
+        s = Wnck.Screen.get_default()
+        popup.set_hint('x', Variant('d', s.get_width()/2))
+        popup.set_hint('y', Variant('d', s.get_height()/2))
+
+        # print("show notification x:",s.get_width()/2.,"y:",s.get_height()/2.)
         popup.show()
-#        time.sleep(1)
+        time.sleep(0.5)
         popup.close()
 
     def main(self):
@@ -30,5 +36,4 @@ class Kludge:
 
 if __name__ == '__main__':
     print("Here comes the kludge")
-    kludge = Kludge()
-    kludge.main()
+    Kludge().main()
