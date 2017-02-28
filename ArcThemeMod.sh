@@ -23,6 +23,15 @@ sudo sed -i -- 's/#444444/#2f343f/g' ./xfwm4/close-*
 sudo sed -i -- 's/#444444/#2f343f/g' ./xfwm4/hide-*
 sudo sed -i -- 's/#444444/#2f343f/g' ./xfwm4/maximize-*
 
+sudo sed -i -- 's/#f0544c/#5294e2/g' ./xfwm4/close-*
+sudo sed -i -- 's/#f0544c/#5294e2/g' ./xfwm4/hide-*
+sudo sed -i -- 's/#f0544c/#5294e2/g' ./xfwm4/maximize-*
+
+#sudo sed -i -- 's/#f0544c/#2f343f/g' ./unity/close*
+#sudo sed -i -- 's/#f0544c/#2f343f/g' ./unity/maximize*
+#sudo sed -i -- 's/#f0544c/#2f343f/g' ./unity/unmaximize*
+#sudo sed -i -- 's/#f0544c/#2f343f/g' ./unity/minimize*
+
 sudo rm -rf ./xfwm4/close-*.png
 sudo rm -rf ./xfwm4/hide-*.png
 sudo rm -rf ./xfwm4/maximize-*.png

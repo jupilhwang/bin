@@ -3,31 +3,29 @@
 SERVER_NAME=`echo $0 | awk '{start = match($0, /start/); print substr($0, RSTART+RLENGTH)}' | cut -d. -f1`
 
 case $SERVER_NAME in
-	"AdminServer" | "WC_Spaces" | "UCM_server1" | "WC_Portlet" | "WC_Utilities" | "soa_server1" | "BpmAdminServer" )
+	"AdminServer" | "WC_Portal" | "UCM_server1" | "WC_Portlet"  | "soa_server1" | "BpmAdminServer" )
 	;;
 	*)
 		echo "################################################"
-		echo "" 
+		echo ""
 		echo "    Input Server Name what you want to startup"
 		echo ""
 		echo "################################################"
 		echo "1. AdminServer"
-		echo "2. WC_Spaces"
+		echo "2. WC_Portal"
 		echo "3. UCM_server1"
 		echo "4. WC_Portet"
-		echo "5. WC_Utilities"
-		echo "6. IBR_server1"
-		echo "7. WC_Collaboration"
-		echo "8. soa_server1"
+		echo "5. WC_Collaboration"
+		echo "6. soa_server1"
 
 		read SERVER_NAME
 
-		case $SERVER_NAME in 
-			"AdminServer" | "WC_Spaces" | "UCM_server1" | "WC_Portlet" | "WC_Utilities" | "soa_server1")
+		case $SERVER_NAME in
+			"AdminServer" | "WC_Portal" | "UCM_server1" | "WC_Portlet" | "soa_server1"| "BpmAdminServer" )
 			;;
-			*)	
+			*)
 				echo $SERVER_NAME 'is wrong. please check the server name'
-				exit 1	
+				exit 1
 			;;
 		esac
 	;;
@@ -38,7 +36,7 @@ esac
 #	AdminServerURL="t3://localhost:7101"
 #	SERVER_NAME="AdminServer"
 #else
-	DOMAIN_HOME="/oracle/user_projects/domains/wc_domain"
+	DOMAIN_HOME="/oracle/user_projects/domains/base_domain"
 	AdminServerURL="t3://localhost:7001"
 #fi
 
@@ -50,7 +48,7 @@ echo '#######################################'
 PS_ID=`ps -ef|grep oracle|grep java|grep -v grep|grep $SERVER_NAME|awk '{print $2}'`
 
 if [ $PS_ID ]; then
-	echo '' 
+	echo ''
 	echo $SERVER_NAME' (PID:' $PS_ID ') is already running ... '
 	exit 1
 else
@@ -66,71 +64,63 @@ LOG_HOME=/oracle/user_projects/logs
 #export WLS_USER=weblogic
 #export WLS_PW=welcome1
 
-export JAVA_VENDOR=Sun
-export JAVA_HOME=/oracle/java/jdk1.7.0_45
+export JAVA_VENDOR=Oracle
+export JAVA_HOME=/oracle/java/jdk1.8.0_102
 export PATH=$JAVA_HOME/bin:$PATH
 
 ### JVM HEAP Memory Setting
 case $SERVER_NAME in
 	"AdminServer")
-		export USER_MEM_ARGS="-Xms512m -Xmx1G -XX:PermSize=256m -XX:MaxPermSize=512m"
+		export USER_MEM_ARGS="-Xms512m -Xmx1G"
 		;;
-	"WC_Spaces" )
-		export USER_MEM_ARGS="-Xms1G -Xmx2G -XX:PermSize=512m -XX:MaxPermSize=512m"
+	"WC_Portal" )
+		export USER_MEM_ARGS="-Xms1G -Xmx2G"
 		;;
 	"UCM_server1")
-		export USER_MEM_ARGS="-Xms512m -Xmx1G -XX:PermSize=256m -XX:MaxPermSize=512m"
-		;;
-	"WC_Utilities" )
-		export USER_MEM_ARGS="-Xms512m -Xmx2G -XX:PermSize=256m -XX:MaxPermSize=512m"
+		export USER_MEM_ARGS="-Xms512m -Xmx1G"
 		;;
 	"WC_Portlet" )
-		export USER_MEM_ARGS="-Xms512m -Xmx1G -XX:PermSize=256m -XX:MaxPermSize=512m"
+		export USER_MEM_ARGS="-Xms512m -Xmx1G"
 		;;
 	*)
-		export USER_MEM_ARGS="-Xms512m -Xmx1G -XX:PermSize=256m -XX:MaxPermSize=512m"
+		export USER_MEM_ARGS="-Xms512m -Xmx1G"
 		;;
 esac
 
-export JAVA_OPTIONS="$JAVA_OPTIONS -XX:NewRatio=12"		#Defualt 8(linux), 2(solaris) 
-#export JAVA_OPTIONS="$JAVA_OPTIONS -XX:SurvivorRatio=10"	#Defualt 8 
+export JAVA_OPTIONS="$JAVA_OPTIONS -XX:+AlwaysPreTouch -XX:+UnlockCommercialFeatures -XX:+ResourceManagement"
+export JAVA_OPTIONS="$JAVA_OPTIONS -XX:NewRatio=12"		#Defualt 8(linux), 2(solaris)
+#export JAVA_OPTIONS="$JAVA_OPTIONS -XX:SurvivorRatio=10"	#Defualt 8
 export JAVA_OPTIONS="$JAVA_OPTIONS -XX:+UseCompressedOops"
 #export JAVA_OPTIONS="$JAVA_OPTIONS -XX:SoftRefLRUPolicyMSPerMB=0"
 #export JAVA_OPTIONS="$JAVA_OPTIONS -XX:+ParallelRefProcEnabled"
 
 
 #export JAVA_OPTIONS="$JAVA_OPTIONS -XX:+UseConcMarkSweepGC"
-#export JAVA_OPTIONS="$JAVA_OPTIONS -XX:+UseParNewGC"				
+#export JAVA_OPTIONS="$JAVA_OPTIONS -XX:+UseParNewGC"
 #export JAVA_OPTIONS="$JAVA_OPTIONS -XX:+CMSParallelRemarkEnabled"
 #export JAVA_OPTIONS="$JAVA_OPTIONS -XX:CMSInitiatingOccupancyFraction=75"
 #export JAVA_OPTIONS="$JAVA_OPTIONS -XX:+UseCMSInitiatingOccupancyOnly"
 ### end : CMS GC
 
 ### start : G1 GC option ##
-export JAVA_OPTIONS="$JAVA_OPTIONS -XX:+UseG1GC"				
-export JAVA_OPTIONS="$JAVA_OPTIONS -XX:+UnlockCommercialFeatures"				
+export JAVA_OPTIONS="$JAVA_OPTIONS -XX:+UseG1GC -XX:+ExplicitGCInvokesConcurrent -XX:+ParallelRefProcEnabled -XX:+UseStringDeduplication -XX:+UnlockExperimentalVMOptions -XX:G1NewSizePercent=20 -XX:+UnlockDiagnosticVMOptions -XX:G1SummarizeRSetStatsPeriod=1"
 #export JAVA_OPTIONS="$JAVA_OPTIONS -XX:MaxGCPauseMillis=200"
 #export JAVA_OPTIONS="$JAVA_OPTIONS -XX:InitiatingHeapOccupancyPercent=45"	#Default 45
 #export JAVA_OPTIONS="$JAVA_OPTIONS -XX:ConcGCThreads=8"
 ### end : G1 GC option ##
 
 ### start : Parallel GC
-#export JAVA_OPTIONS="$JAVA_OPTIONS -XX:+UseParallelGC"				
-#export JAVA_OPTIONS="$JAVA_OPTIONS -XX:ParallelGCThreads=8"	#Default 
+#export JAVA_OPTIONS="$JAVA_OPTIONS -XX:+UseParallelGC"
+#export JAVA_OPTIONS="$JAVA_OPTIONS -XX:ParallelGCThreads=8"	#Default
 #export JAVA_OPTIONS="$JAVA_OPTIONS -Xnoclassgc"
 ### end : Parallel GC
 
 export JAVA_OPTIONS="$JAVA_OPTIONS -XX:+HeapDumpOnOutOfMemoryError"
-export JAVA_OPTIONS="$JAVA_OPTIONS -XX:+DisableExplicitGC"
-export JAVA_OPTIONS="$JAVA_OPTIONS -XX:+PrintGCDetails"
-export JAVA_OPTIONS="$JAVA_OPTIONS -XX:+PrintGCDateStamps"
-export JAVA_OPTIONS="$JAVA_OPTIONS -XX:+DisableExplicitGC"
-export JAVA_OPTIONS="$JAVA_OPTIONS -XX:+PrintGCDetails"
-export JAVA_OPTIONS="$JAVA_OPTIONS -XX:+PrintGCDateStamps"
-export JAVA_OPTIONS="$JAVA_OPTIONS -XX:+PrintGCApplicationStoppedTime"
+
+export JAVA_OPTIONS="$JAVA_OPTIONS -XX:+PrintGC -XX:+PrintGCDateStamps -XX:+PrintGCDetails -XX:+PrintHeapAtGC -XX:+PrintGCCause -XX:+PrintTenuringDistribution -XX:+PrintReferenceGC -XX:+PrintAdaptiveSizePolicy -XX:+PrintGCApplicationStoppedTime"
 export JAVA_OPTIONS="$JAVA_OPTIONS -XX:+UseGCLogFileRotation"
 export JAVA_OPTIONS="$JAVA_OPTIONS -XX:NumberOfGCLogFiles=10"
-export JAVA_OPTIONS="$JAVA_OPTIONS -XX:GCLogFIleSize=1048576"
+export JAVA_OPTIONS="$JAVA_OPTIONS -XX:GCLogFileSize=50m"
 export JAVA_OPTIONS="$JAVA_OPTIONS -Xloggc:=${LOG_HOME}/${SERVER_NAME}_GC_`date '+%y%m%d_%H%M%S'`.gc"
 
 export JAVA_OPTIONS="$JAVA_OPTIONS -XX:+UseLargePages"
