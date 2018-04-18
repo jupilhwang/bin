@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-cd /home/jhwang/.jhwangSites
+cd /home/jhwang/works/jhwangSites
 hugo
 cd public
 git add -A
