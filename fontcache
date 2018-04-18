@@ -1,0 +1,10 @@
+#!/bin/bash
+
+fc-cache -fv && fc-cache r
+
+echo "\n\n###################################\n"
+
+for family in sans serif sans-serif monospace Arial Helvetica Verdana "Times New Roman" "Courier New" "Malgun Gothic" "맑은 고딕"; do
+  echo -n "$family: "
+  fc-match "$family"
+done
