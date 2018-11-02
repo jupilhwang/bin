@@ -1,0 +1,15 @@
+#!/bin/bash
+
+case $1 in
+	battery)
+		echo "Running powersaving on AC in 3 seconds"
+		sleep 3
+#		tee /sys/class/backlight/intel_backlight/brightness <<< 150
+		tee /sys/class/backlight/intel_backlight/brightness <<< 606
+	;;
+	AC)
+		echo "Running powersaving on battery in 3 seconds"
+		sleep 3
+		tee /sys/class/backlight/intel_backlight/brightness <<< 1515
+	;;
+esac
